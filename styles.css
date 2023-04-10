@@ -1,1 +1,40 @@
 /*  your css code here. If applicable */
+
+const images = [
+  { url: "https://via.placeholder.com/150/92c952" },
+  { url: "https://via.placeholder.com/150/771796" },
+  { url: "https://via.placeholder.com/150/24f355" },
+  { url: "https://via.placeholder.com/150/d32776" },
+  { url: "https://via.placeholder.com/150/f66b97" },
+  { url: "https://via.placeholder.com/150/56a8c2" },
+  { url: "https://via.placeholder.com/150/b0f7cc" },
+  { url: "https://via.placeholder.com/150/7bdcb5" },
+  { url: "https://via.placeholder.com/150/debe33" },
+  { url: "https://via.placeholder.com/150/ed70bd" },
+];
+
+function downloadImages() {
+  const promises = images.map(image => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = () => reject(`Failed to load image's URL: ${image.url}`);
+      img.src = image.url;
+    });
+  });
+
+  Promise.all(promises)
+    .then(images => {
+      const output = document.getElementById("output");
+      images.forEach(img => {
+        output.appendChild(img);
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
+const button = document.getElementById("download-images-button");
+button.addEventListener("click", downloadImages);
+
